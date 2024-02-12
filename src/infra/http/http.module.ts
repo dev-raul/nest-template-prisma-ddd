@@ -6,13 +6,6 @@ import { AppController } from './controllers/app/app.controller';
 @Module({
   imports: [DatabaseModule],
   controllers: [AppController],
-  providers: [
-    // UserResolver,
-    // JwtStrategy,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JWTAuthGuard,
-    // },
-  ],
+  providers: [],
 })
 export class HttpModule {}
