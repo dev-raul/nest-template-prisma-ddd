@@ -34,6 +34,7 @@ async function bootstrap() {
   });
 }
 
+//Tracer router
 tracer.init({
   service: APP_NAME,
   env: ENV,

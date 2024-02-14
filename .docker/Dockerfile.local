@@ -1,0 +1,12 @@
+FROM node:18-alpine
+WORKDIR /usr/app
+COPY --chown=node:node package*.json yarn.lock ./
+COPY . .
+RUN yarn install --silent
+
+FROM node:18-alpine
+WORKDIR /usr/app
+COPY prisma prisma/
+CMD npx prisma migrate dev
+
+ENTRYPOINT [ "yarn", "start:dev" ]

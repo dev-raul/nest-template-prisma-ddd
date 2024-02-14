@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { Request } from 'express';
 import { ServerResponse } from 'http';
+import { IncomingMessage } from 'http';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
 
 import { LoggerService } from './logger.service';
-import { IncomingMessage } from 'http';
 
 const statusText: Record<string, string> = {
   '202': 'Accepted',
