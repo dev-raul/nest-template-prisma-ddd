@@ -1,0 +1,16 @@
+.env.example
+.eslintrc.*
+.eslintignore
+.gitignore
+.prettierrc
+cloudbuild.*
+README.*
+tmp
+
+dist/
+node_modules/
+.k8s
+.docker
+.devcontainer
+.vscode
+.git

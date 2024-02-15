@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  database:
+    image: 'postgres'
+    container_name: 'postgres-${APP_NAME}'
+    restart: always
+    ports:
+      - ${DATABASE_PORT}:5432
+    environment:
+      - POSTGRES_DATABASE=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASS}
+      - POSTGRES_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+  aplication:
+    container_name: 'api-${APP_NAME}'
+    restart: always
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile.${DOCKER_ENV}
+    volumes:
+      - ./api:/usr/src/app/
+    ports:
+      - ${APP_PORT}:8080
+    networks:
+      - app-net
+    depends_on:
+      - database
+    env_file:
+      - .env
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

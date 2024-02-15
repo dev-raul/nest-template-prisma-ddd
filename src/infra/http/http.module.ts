@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@infra/database/database.module';
+
 import { AppController } from './controllers/app/app.controller';
 
 @Module({
