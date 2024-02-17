@@ -29,6 +29,7 @@
     "@nestjs/swagger": "^7.3.0",
     "@prisma/adapter-pg": "^5.9.1",
     "@prisma/client": "^5.9.1",
+    "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dd-trace": "^5.2.0",

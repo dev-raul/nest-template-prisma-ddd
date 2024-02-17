@@ -1,5 +1,5 @@
-import { Either, left, right } from '@core/logic/Either';
 import { User } from '@domain/entities/user.entity';
+import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
 import { Email } from '@domain/value-objects/email';
 import { EmailAlreadyExistError } from '@domain/value-objects/errors/email-already-exist-error';
 import { EmailBadFormattedError } from '@domain/value-objects/errors/email-bad-formatted-error';
@@ -15,10 +15,13 @@ type CreateUserResponse = User;
 
 @Injectable()
 export class CreateUser {
-  constructor(private userRepository: UsersRepository) {}
+  constructor(
+    private userRepository: UsersRepository,
+    private encryptorService: EncryptorService,
+  ) {}
   async execute({
     email,
-    password,
+    password: _password,
   }: CreateUserRequest): Promise<CreateUserResponse> {
     const isInvalidEmail = !Email.validate(email);
 
@@ -28,6 +31,8 @@ export class CreateUser {
 
     const findUser = await this.userRepository.findByEmail(email);
     if (findUser) throw new EmailAlreadyExistError(email);
+
+    const password = await this.encryptorService.hash(_password);
 
     const user = User.create({
       email,
