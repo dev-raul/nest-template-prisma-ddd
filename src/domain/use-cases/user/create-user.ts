@@ -6,15 +6,15 @@ import { EmailBadFormattedError } from '@domain/value-objects/errors/email-bad-f
 import { UsersRepository } from '@infra/database/repositories/users.repository';
 import { Injectable } from '@nestjs/common';
 
-type CreateUserRequest = {
+type UseCaseCreateUserRequest = {
   email: string;
   password: string;
 };
 
-type CreateUserResponse = User;
+type UseCaseCreateUserResponse = User;
 
 @Injectable()
-export class CreateUser {
+export class UseCaseCreateUser {
   constructor(
     private userRepository: UsersRepository,
     private encryptorService: EncryptorService,
@@ -22,7 +22,7 @@ export class CreateUser {
   async execute({
     email,
     password: _password,
-  }: CreateUserRequest): Promise<CreateUserResponse> {
+  }: UseCaseCreateUserRequest): Promise<UseCaseCreateUserResponse> {
     const isInvalidEmail = !Email.validate(email);
 
     if (isInvalidEmail) {
