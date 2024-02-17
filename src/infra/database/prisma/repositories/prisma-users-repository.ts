@@ -13,12 +13,12 @@ import { PrismaService } from '../prisma.service';
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(user: User): Promise<User> {
-    await this.prisma.user.create({
-      data: UserMapper.toPersistence(user),
+  async create(user: User): AsyncMaybe<User> {
+    const userCreated = await this.prisma.user.create({
+      data: UserMapper.toPrisma(user),
     });
 
-    return user;
+    return UserMapper.toDomain(userCreated);
   }
 
   async findByEmail(email: string): AsyncMaybe<User> {

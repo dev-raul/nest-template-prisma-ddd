@@ -4,17 +4,21 @@ import { User } from '@domain/entities/user.entity';
 
 export class UserMapper {
   static toDomain(raw: RawUser): User {
-    const user = User.create({
-      email: raw.email,
-      createdAt: raw.created_at,
-    });
+    const user = User.create(
+      {
+        email: raw.email,
+        password: raw.password,
+        createdAt: raw.created_at,
+      },
+      raw.id,
+    );
 
     return user;
   }
 
-  static toPersistence(user: User): Prisma.UserCreateInput {
+  static toPrisma(user: User): Prisma.UserCreateInput {
     return {
-      id: user.id,
+      password: user.password,
       email: user.email,
       created_at: user.createdAt,
     };
