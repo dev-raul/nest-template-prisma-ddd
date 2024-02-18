@@ -1,4 +1,7 @@
 import 'dotenv/config';
 
+const EXPIREIN = Number(process.env.JWT_EXPIREIN) ?? 60;
 export const JWT_SECRECT = process.env.JWT_SECRECT;
-export const JWT_EXPIREIN = process.env.JWT_EXPIREIN ?? '60s';
+export const JWT_REFRESH_TOKEN_SECRECT = process.env.JWT_REFRESH_TOKEN_SECRECT;
+export const JWT_EXPIREIN = `${EXPIREIN}s`;
+export const JWT_REFRESH_TOKEN_EXPIREIN = `${EXPIREIN * 2}s`;

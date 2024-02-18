@@ -6,6 +6,10 @@ import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
 import { UsersRepository } from '@infra/database/repositories/users.repository';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import {
+  JWT_REFRESH_TOKEN_EXPIREIN,
+  JWT_REFRESH_TOKEN_SECRECT,
+} from 'src/config/jwt';
 
 type UseCaseCreateSignInRequest = {
   email: string;
@@ -14,6 +18,7 @@ type UseCaseCreateSignInRequest = {
 
 type UseCaseCreateSignInResponse = {
   accessToken: string;
+  refreshToken: string;
 };
 
 @Injectable()
@@ -48,6 +53,16 @@ export class UseCaseCreateSignIn {
       sub: user.id,
     });
 
-    return { accessToken };
+    const refreshToken = await this.jwtService.signAsync(
+      {
+        sub: user.id,
+      },
+      {
+        secret: JWT_REFRESH_TOKEN_SECRECT,
+        expiresIn: JWT_REFRESH_TOKEN_EXPIREIN,
+      },
+    );
+
+    return { accessToken, refreshToken };
   }
 }
