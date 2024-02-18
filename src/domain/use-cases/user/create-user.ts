@@ -1,10 +1,12 @@
+import { Injectable } from '@nestjs/common';
+
 import { User } from '@domain/entities/user.entity';
 import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
 import { Email } from '@domain/value-objects/email';
 import { EmailAlreadyExistError } from '@domain/value-objects/errors/email-already-exist-error';
 import { EmailBadFormattedError } from '@domain/value-objects/errors/email-bad-formatted-error';
+
 import { UsersRepository } from '@infra/database/repositories/users.repository';
-import { Injectable } from '@nestjs/common';
 
 type UseCaseCreateUserRequest = {
   email: string;

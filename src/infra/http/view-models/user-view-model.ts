@@ -1,5 +1,6 @@
-import { User } from '@domain/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { User } from '@domain/entities/user.entity';
 
 export class UserViewModelResponse {
   @ApiProperty()

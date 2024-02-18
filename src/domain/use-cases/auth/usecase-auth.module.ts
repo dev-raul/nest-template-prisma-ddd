@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
+
 import { DatabaseModule } from '@infra/database/database.module';
 import { ServicesModule } from '@infra/http/services/services';
+
 import { UseCaseCreateSignIn } from './create-signin';
 import { UseCaseRefreshToken } from './refresh-token';
 

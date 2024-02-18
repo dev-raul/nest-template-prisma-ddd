@@ -1,6 +1,7 @@
-import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+
+import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
 
 @Injectable()
 export class BcryptEncryptorService implements EncryptorService {

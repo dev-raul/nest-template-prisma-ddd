@@ -1,4 +1,3 @@
-import { UseCaseCreateSignIn } from '@domain/use-cases/auth/create-signin';
 import {
   Body,
   Controller,
@@ -7,20 +6,23 @@ import {
   HttpStatus,
   Post,
   Request,
-  UseGuards,
 } from '@nestjs/common';
-import { CreateSignInBody } from './dto/create-signin-body';
-import { CreateSignInResponse } from './dto/create-signin-response';
-import { UseCaseGetUser } from '@domain/use-cases/user/get-user';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+
+import { UseCaseCreateSignIn } from '@domain/use-cases/auth/create-signin';
+import { UseCaseRefreshToken } from '@domain/use-cases/auth/refresh-token';
+import { UseCaseGetUser } from '@domain/use-cases/user/get-user';
+
+import { RequestAuthUser } from '@infra/http/auth/auth-user';
+import { Public } from '@infra/http/auth/public';
 import {
   UserViewModel,
   UserViewModelResponse,
 } from '@infra/http/view-models/user-view-model';
-import { Public } from '@infra/http/auth/public';
+
+import { CreateSignInBody } from './dto/create-signin-body';
+import { CreateSignInResponse } from './dto/create-signin-response';
 import { RefreshTokenBody } from './dto/refresh-token-body';
-import { UseCaseRefreshToken } from '@domain/use-cases/auth/refresh-token';
-import { AuthUser, RequestAuthUser } from '@infra/http/auth/auth-user';
 
 @ApiTags('auth')
 @Controller('auth')

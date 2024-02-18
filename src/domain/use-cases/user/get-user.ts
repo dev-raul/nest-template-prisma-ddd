@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+
 import { User } from '@domain/entities/user.entity';
 import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
+
 import { UsersRepository } from '@infra/database/repositories/users.repository';
 
 type UseCaseGetUserRequest = {

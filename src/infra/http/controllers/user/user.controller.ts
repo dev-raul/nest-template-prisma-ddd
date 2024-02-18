@@ -1,16 +1,10 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { UseCaseCreateUser } from '@domain/use-cases/user/create-user';
-import { UserViewModel } from '@infra/http/view-models/user-view-model';
+
 import { Public } from '@infra/http/auth/public';
+import { UserViewModel } from '@infra/http/view-models/user-view-model';
 
 import { CreateUserBody } from './dto/create-user-body';
 import { CreateUserResponse } from './dto/create-user-response';

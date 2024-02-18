@@ -1,13 +1,14 @@
-import { InvalidCredentialError } from '@domain/value-objects/errors/invalid-credential-error';
-import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
-import { UsersRepository } from '@infra/database/repositories/users.repository';
-import { AuthUser } from '@infra/http/auth/auth-user';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   JWT_REFRESH_TOKEN_EXPIREIN,
   JWT_REFRESH_TOKEN_SECRECT,
 } from 'src/config/jwt';
+
+import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
+
+import { UsersRepository } from '@infra/database/repositories/users.repository';
+import { AuthUser } from '@infra/http/auth/auth-user';
 
 type UseCaseRefreshTokenRequest = {
   refreshToken: string;

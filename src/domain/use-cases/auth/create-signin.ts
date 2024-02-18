@@ -1,15 +1,17 @@
-import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
-import { Email } from '@domain/value-objects/email';
-import { EmailBadFormattedError } from '@domain/value-objects/errors/email-bad-formatted-error';
-import { InvalidCredentialError } from '@domain/value-objects/errors/invalid-credential-error';
-import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
-import { UsersRepository } from '@infra/database/repositories/users.repository';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   JWT_REFRESH_TOKEN_EXPIREIN,
   JWT_REFRESH_TOKEN_SECRECT,
 } from 'src/config/jwt';
+
+import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
+import { Email } from '@domain/value-objects/email';
+import { EmailBadFormattedError } from '@domain/value-objects/errors/email-bad-formatted-error';
+import { InvalidCredentialError } from '@domain/value-objects/errors/invalid-credential-error';
+import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
+
+import { UsersRepository } from '@infra/database/repositories/users.repository';
 
 type UseCaseCreateSignInRequest = {
   email: string;
