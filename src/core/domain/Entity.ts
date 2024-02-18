@@ -1,15 +1,13 @@
-import crypto from 'node:crypto';
-
 export abstract class Entity<T> {
-  protected readonly _id: string;
+  protected readonly _id: number;
   public readonly props: T;
 
   get id() {
     return this._id;
   }
 
-  constructor(props: T, id?: string) {
-    this._id = id || crypto.randomUUID();
+  constructor(props: T, id?: number) {
+    this._id = id;
     this.props = props;
   }
 

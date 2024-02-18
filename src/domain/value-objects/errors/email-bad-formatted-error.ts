@@ -1,8 +1,7 @@
-import { DomainError } from '@core/domain/errors/DomainError';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
-export class EmailBadFormattedError extends Error implements DomainError {
+export class EmailBadFormattedError extends HttpException {
   constructor(email: string) {
-    super(`The email '${email}' is bad formatted.`);
-    this.name = 'EmailBadFormatted';
+    super(`The email '${email}' is bad formatted.`, HttpStatus.BAD_REQUEST);
   }
 }

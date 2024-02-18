@@ -1,3 +1,9 @@
 export type AuthUser = {
-  atlasUserId: string;
+  sub: number;
+  iat: number;
+  exp: number;
+};
+
+export type RequestAuthUser = {
+  user: AuthUser;
 };

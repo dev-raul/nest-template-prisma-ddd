@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import tracer from 'dd-trace';
 import { LoggerErrorInterceptor } from 'nestjs-pino';
 
@@ -28,6 +29,14 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableShutdownHooks();
+
+  const config = new DocumentBuilder()
+    .setTitle(APP_NAME)
+    .setDescription(`The ${APP_NAME} API description`)
+    .setVersion(APP_VERSION)
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.listen(PORT).then(() => {
     LoggerServiceInstance.log(`HTTP server running on port ${PORT}!`);

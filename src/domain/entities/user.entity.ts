@@ -3,12 +3,17 @@ import { Replace } from '@core/logic/Replace';
 
 export type UserProps = {
   email: string;
+  password: string;
   createdAt: Date;
 };
 
 export class User extends Entity<UserProps> {
   get email() {
     return this.props.email;
+  }
+
+  get password() {
+    return this.props.password;
   }
 
   get createdAt() {
@@ -22,7 +27,7 @@ export class User extends Entity<UserProps> {
         createdAt?: Date;
       }
     >,
-    id?: string,
+    id?: number,
   ) {
     const user = new User(
       {
