@@ -1,10 +1,9 @@
-import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
+import { Test } from '@nestjs/testing';
+
 import { UseCaseCreateUser } from '@domain/use-cases/user/create-user';
 
-import { PrismaService } from '@infra/database/prisma/prisma.service';
-import { PrismaUsersRepository } from '@infra/database/prisma/repositories/prisma-users-repository';
-import { UsersRepository } from '@infra/database/repositories/users.repository';
-import { BcryptEncryptorService } from '@infra/http/services/encryptor/bcrypt-encriptor-service';
+import { DatabaseModule } from '@infra/database/database.module';
+import { ServicesModule } from '@infra/http/services/services';
 import { UserViewModel } from '@infra/http/view-models/user-view-model';
 
 import { makeFakeUser } from '@test/factories/users.factory';
@@ -14,32 +13,30 @@ import { UserController } from './user.controller';
 describe('UserController', () => {
   let userController: UserController;
   let useCaseCreateUser: UseCaseCreateUser;
-  let userRepository: UsersRepository;
-  let encryptorService: EncryptorService;
-  let prisma: PrismaService;
 
   const user = makeFakeUser({}, 1);
 
   beforeEach(async () => {
-    prisma = new PrismaService();
-    userRepository = new PrismaUsersRepository(prisma);
-    encryptorService = new BcryptEncryptorService();
-    useCaseCreateUser = new UseCaseCreateUser(userRepository, encryptorService);
-    userController = new UserController(useCaseCreateUser);
+    const moduleRef = await Test.createTestingModule({
+      imports: [DatabaseModule, ServicesModule],
+      controllers: [UserController],
+      providers: [UseCaseCreateUser],
+    }).compile();
+
+    useCaseCreateUser = moduleRef.get<UseCaseCreateUser>(UseCaseCreateUser);
+    userController = moduleRef.get<UserController>(UserController);
   });
 
-  describe('root', () => {
-    it('should create user', async () => {
-      jest.spyOn(useCaseCreateUser, 'execute').mockResolvedValue(user);
+  it('should create user', async () => {
+    jest.spyOn(useCaseCreateUser, 'execute').mockResolvedValue(user);
 
-      expect(
-        await userController.create({
-          email: user.email,
-          password: user.password,
-        }),
-      ).toEqual({
-        user: UserViewModel.toHttp(user),
-      });
+    expect(
+      await userController.create({
+        email: user.email,
+        password: user.password,
+      }),
+    ).toEqual({
+      user: UserViewModel.toHttp(user),
     });
   });
 });
