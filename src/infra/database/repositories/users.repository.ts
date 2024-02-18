@@ -8,4 +8,5 @@ import { User } from '@domain/entities/user.entity';
 export abstract class UsersRepository {
   abstract create(user: User): AsyncMaybe<User>;
   abstract findByEmail(email: string): AsyncMaybe<User>;
+  abstract findById(id: number): AsyncMaybe<User>;
 }

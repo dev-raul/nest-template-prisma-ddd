@@ -10,6 +10,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { UseCaseCreateUser } from '@domain/use-cases/user/create-user';
 import { UserViewModel } from '@infra/http/view-models/user-view-model';
+import { Public } from '@infra/http/auth/public';
 
 import { CreateUserBody } from './dto/create-user-body';
 import { CreateUserResponse } from './dto/create-user-response';
@@ -22,6 +23,7 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   @Post('/')
   @ApiResponse({ type: CreateUserResponse, status: HttpStatus.CREATED })
+  @Public()
   async post(@Body() body: CreateUserBody): Promise<CreateUserResponse> {
     const user = await this.useCaseCreateUser.execute({
       email: body.email,

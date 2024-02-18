@@ -44,7 +44,9 @@ export class UseCaseCreateSignIn {
 
     if (!isValidPassword) throw new InvalidCredentialError();
 
-    const accessToken = await this.jwtService.signAsync({ sub: user.id });
+    const accessToken = await this.jwtService.signAsync({
+      sub: user.id,
+    });
 
     return { accessToken };
   }
