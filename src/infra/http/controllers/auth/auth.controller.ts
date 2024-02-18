@@ -11,7 +11,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { UseCaseCreateSignIn } from '@domain/use-cases/auth/create-signin';
 import { UseCaseRefreshToken } from '@domain/use-cases/auth/refresh-token';
-import { UseCaseGetUser } from '@domain/use-cases/user/get-user';
+import { UseCaseGetUserById } from '@domain/use-cases/user/get-user-by-id';
 
 import { RequestAuthUser } from '@infra/http/auth/auth-user';
 import { Public } from '@infra/http/auth/public';
@@ -30,7 +30,7 @@ export class AuthController {
   constructor(
     private useCaseCreateSignIn: UseCaseCreateSignIn,
     private useCaseRefreshToken: UseCaseRefreshToken,
-    private useCaseGetUser: UseCaseGetUser,
+    private useCaseGetUserById: UseCaseGetUserById,
   ) {}
 
   @HttpCode(HttpStatus.OK)
@@ -73,7 +73,7 @@ export class AuthController {
   async getProfile(
     @Request() req: RequestAuthUser,
   ): Promise<UserViewModelResponse> {
-    const user = await this.useCaseGetUser.execute({ id: req.user.sub });
+    const user = await this.useCaseGetUserById.execute({ id: req.user.sub });
 
     return UserViewModel.toHttp(user);
   }

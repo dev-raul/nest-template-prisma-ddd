@@ -1,9 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import {
   JWT_REFRESH_TOKEN_EXPIREIN,
   JWT_REFRESH_TOKEN_SECRECT,
-} from 'src/config/jwt';
+} from '@config/jwt';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
 
