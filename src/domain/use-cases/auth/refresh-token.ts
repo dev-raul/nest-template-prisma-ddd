@@ -28,34 +28,32 @@ export class UseCaseRefreshToken {
   async execute({
     refreshToken: currentRefreshToken,
   }: UseCaseRefreshTokenRequest): Promise<UseCaseRefreshTokenResponse> {
-    try {
-      const payload = await this.jwtService.verifyAsync<AuthUser>(
-        currentRefreshToken,
-        {
-          secret: JWT_REFRESH_TOKEN_SECRECT,
-        },
-      );
+    const payload = await this.jwtService.verifyAsync<AuthUser>(
+      currentRefreshToken,
+      {
+        secret: JWT_REFRESH_TOKEN_SECRECT,
+      },
+    );
 
-      const user = await this.userRepository.findById(payload?.sub);
-      if (!user) throw new NotFoundError('user');
+    if (!payload) throw new UnauthorizedException();
 
-      const accessToken = await this.jwtService.signAsync({
+    const user = await this.userRepository.findById(payload?.sub);
+    if (!user) throw new NotFoundError('user');
+
+    const accessToken = await this.jwtService.signAsync({
+      sub: user.id,
+    });
+
+    const refreshToken = await this.jwtService.signAsync(
+      {
         sub: user.id,
-      });
+      },
+      {
+        secret: JWT_REFRESH_TOKEN_SECRECT,
+        expiresIn: JWT_REFRESH_TOKEN_EXPIREIN,
+      },
+    );
 
-      const refreshToken = await this.jwtService.signAsync(
-        {
-          sub: user.id,
-        },
-        {
-          secret: JWT_REFRESH_TOKEN_SECRECT,
-          expiresIn: JWT_REFRESH_TOKEN_EXPIREIN,
-        },
-      );
-
-      return { accessToken, refreshToken };
-    } catch (err) {
-      throw new UnauthorizedException();
-    }
+    return { accessToken, refreshToken };
   }
 }

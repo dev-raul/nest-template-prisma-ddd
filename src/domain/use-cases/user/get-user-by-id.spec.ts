@@ -17,7 +17,7 @@ jest.useFakeTimers({
 
 describe('UseCaseGetUserById', () => {
   let useCaseGetUserById: UseCaseGetUserById;
-  let userRepositry: UsersRepository;
+  let userRepository: UsersRepository;
 
   const user = makeFakeUser({}, 1);
 
@@ -27,11 +27,11 @@ describe('UseCaseGetUserById', () => {
     }).compile();
 
     useCaseGetUserById = moduleRef.get<UseCaseGetUserById>(UseCaseGetUserById);
-    userRepositry = moduleRef.get<UsersRepository>(UsersRepository);
+    userRepository = moduleRef.get<UsersRepository>(UsersRepository);
   });
 
   it('should error to not exist user', async () => {
-    jest.spyOn(userRepositry, 'findById').mockResolvedValue(null);
+    jest.spyOn(userRepository, 'findById').mockResolvedValue(null);
     await expect(
       useCaseGetUserById.execute({
         id: user.id,
@@ -40,13 +40,13 @@ describe('UseCaseGetUserById', () => {
   });
 
   it('should get user', async () => {
-    jest.spyOn(userRepositry, 'findById').mockResolvedValue(user);
+    jest.spyOn(userRepository, 'findById').mockResolvedValue(user);
 
     expect(
       await useCaseGetUserById.execute({
         id: user.id,
       }),
     ).toEqual(user);
-    expect(userRepositry.findById).toHaveBeenCalledWith(user.id);
+    expect(userRepository.findById).toHaveBeenCalledWith(user.id);
   });
 });

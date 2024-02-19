@@ -1,6 +1,6 @@
+import { jwtConfig } from '@config/jwt';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { JWT_EXPIREIN, JWT_SECRECT } from 'src/config/jwt';
 
 import { UseCaseModule } from '@domain/use-cases/usecase.module';
 
@@ -15,11 +15,7 @@ import { ServicesModule } from './services/services';
     DatabaseModule,
     ServicesModule,
     UseCaseModule,
-    JwtModule.register({
-      global: true,
-      secret: JWT_SECRECT,
-      signOptions: { expiresIn: JWT_EXPIREIN },
-    }),
+    JwtModule.register(jwtConfig),
   ],
   controllers: [UserController, AuthController],
   providers: [],

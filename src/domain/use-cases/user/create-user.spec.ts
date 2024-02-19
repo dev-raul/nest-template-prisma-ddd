@@ -21,7 +21,7 @@ jest.useFakeTimers({
 
 describe('UseCaseCreateUser', () => {
   let useCaseCreateUser: UseCaseCreateUser;
-  let userRepositry: UsersRepository;
+  let userRepository: UsersRepository;
   let encryptorService: EncryptorService;
 
   const user = makeFakeUser(
@@ -37,7 +37,7 @@ describe('UseCaseCreateUser', () => {
     }).compile();
 
     useCaseCreateUser = moduleRef.get<UseCaseCreateUser>(UseCaseCreateUser);
-    userRepositry = moduleRef.get<UsersRepository>(UsersRepository);
+    userRepository = moduleRef.get<UsersRepository>(UsersRepository);
     encryptorService = moduleRef.get<EncryptorService>(EncryptorService);
   });
 
@@ -51,7 +51,7 @@ describe('UseCaseCreateUser', () => {
   });
 
   it('should error to already exist user', async () => {
-    jest.spyOn(userRepositry, 'findByEmail').mockResolvedValue(user);
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(user);
     await expect(
       useCaseCreateUser.execute({
         email: user.email,
@@ -61,8 +61,8 @@ describe('UseCaseCreateUser', () => {
   });
 
   it('should create user', async () => {
-    jest.spyOn(userRepositry, 'findByEmail').mockResolvedValue(null);
-    jest.spyOn(userRepositry, 'create').mockResolvedValue(user);
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(null);
+    jest.spyOn(userRepository, 'create').mockResolvedValue(user);
     jest.spyOn(encryptorService, 'hash').mockResolvedValue(user.password);
 
     expect(
@@ -72,7 +72,7 @@ describe('UseCaseCreateUser', () => {
       }),
     ).toEqual(user);
 
-    expect(userRepositry.create).toHaveBeenCalledWith(
+    expect(userRepository.create).toHaveBeenCalledWith(
       User.create({
         email: user.email,
         password: user.password,
