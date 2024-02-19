@@ -11,7 +11,6 @@ export default {
   },
   collectCoverageFrom: ['<rootDir>/src/**/*.(t|j)s'],
   coverageDirectory: 'coverage',
-  collectCoverage: true,
   testEnvironment: 'node',
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>',
