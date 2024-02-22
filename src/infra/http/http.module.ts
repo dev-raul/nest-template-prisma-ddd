@@ -8,7 +8,7 @@ import { DatabaseModule } from '@infra/database/database.module';
 
 import { AuthController } from './controllers/auth/auth.controller';
 import { UserController } from './controllers/user/user.controller';
-import { ServicesModule } from './services/services';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
