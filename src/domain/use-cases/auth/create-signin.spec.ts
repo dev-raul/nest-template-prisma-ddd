@@ -1,21 +1,18 @@
-import { jwtConfig } from '@config/jwt';
 import faker from '@faker-js/faker';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { Test } from '@nestjs/testing';
+import { JwtService } from '@nestjs/jwt';
 
 import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
 import { EmailBadFormattedError } from '@domain/value-objects/errors/email-bad-formatted-error';
 import { InvalidCredentialError } from '@domain/value-objects/errors/invalid-credential-error';
 import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
 
-import { DatabaseModule } from '@infra/database/database.module';
 import { UsersRepository } from '@infra/database/repositories/users.repository';
-import { ServicesModule } from '@infra/http/services/services';
+import { BcryptEncryptorService } from '@infra/http/services/encryptor/bcrypt-encriptor-service';
 
 import { makeFakeUser } from '@test/factories/users.factory';
+import { InMemoryUsersRepository } from '@test/repositories/in-memory-users.repository';
 
 import { UseCaseCreateSignIn } from './create-signin';
-import { UseCaseAuthModule } from './usecase-auth.module';
 
 describe('UseCaseCreateSignIn', () => {
   let useCaseCreateSignIn: UseCaseCreateSignIn;
@@ -30,20 +27,14 @@ describe('UseCaseCreateSignIn', () => {
   };
 
   beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [
-        DatabaseModule,
-        ServicesModule,
-        JwtModule.register(jwtConfig),
-        UseCaseAuthModule,
-      ],
-    }).compile();
-
-    useCaseCreateSignIn =
-      moduleRef.get<UseCaseCreateSignIn>(UseCaseCreateSignIn);
-    userRepository = moduleRef.get<UsersRepository>(UsersRepository);
-    encryptorService = moduleRef.get<EncryptorService>(EncryptorService);
-    jwtService = moduleRef.get<JwtService>(JwtService);
+    encryptorService = new BcryptEncryptorService();
+    userRepository = new InMemoryUsersRepository();
+    jwtService = new JwtService();
+    useCaseCreateSignIn = new UseCaseCreateSignIn(
+      userRepository,
+      encryptorService,
+      jwtService,
+    );
   });
 
   it('should error to email bad formated', async () => {

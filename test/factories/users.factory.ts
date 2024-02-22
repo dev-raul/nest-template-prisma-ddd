@@ -14,6 +14,7 @@ type Overrides = Partial<
     {
       email?: string;
       createdAt?: Date;
+      updateAt?: Date;
     }
   >
 >;
@@ -21,12 +22,14 @@ type Overrides = Partial<
 export function makeFakeUser(data = {} as Overrides, id: number) {
   const email = faker.internet.email();
   const password = faker.internet.password();
-  const createdAt = faker.date.past();
+  const createdAt = new Date();
+  const updateAt = new Date();
 
   const props: UserProps = {
     email: data.email || email,
     password: data.password || password,
     createdAt: data.createdAt || createdAt,
+    updateAt: data.updateAt || updateAt,
   };
 
   const user = User.create(props, id);

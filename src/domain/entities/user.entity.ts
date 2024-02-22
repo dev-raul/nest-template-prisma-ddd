@@ -5,6 +5,7 @@ export type UserProps = {
   email: string;
   password: string;
   createdAt: Date;
+  updateAt: Date;
 };
 
 export class User extends Entity<UserProps> {
@@ -20,11 +21,16 @@ export class User extends Entity<UserProps> {
     return this.props.createdAt;
   }
 
+  get updateAt() {
+    return this.props.updateAt;
+  }
+
   static create(
     props: Replace<
       UserProps,
       {
         createdAt?: Date;
+        updateAt?: Date;
       }
     >,
     id?: number,
@@ -33,6 +39,7 @@ export class User extends Entity<UserProps> {
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
+        updateAt: props.updateAt ?? new Date(),
       },
       id,
     );

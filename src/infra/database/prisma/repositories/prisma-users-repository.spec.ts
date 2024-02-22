@@ -49,4 +49,40 @@ describe('PrismaUsersRepository', () => {
     });
     expect(newUser).toEqual(UserMapper.toDomain(userToDomain));
   });
+
+  it('should get user by email', async () => {
+    jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(null);
+    expect(await usersRepository.findByEmail(user.email)).toBeNull();
+
+    expect(prismaService.user.findUnique).toHaveBeenCalledWith({
+      where: {
+        email: user.email,
+      },
+    });
+
+    jest
+      .spyOn(prismaService.user, 'findUnique')
+      .mockResolvedValue(userToDomain);
+    expect(await usersRepository.findByEmail(user.email)).toEqual(
+      UserMapper.toDomain(userToDomain),
+    );
+  });
+
+  it('should get user by id', async () => {
+    jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(null);
+    expect(await usersRepository.findById(user.id)).toBeNull();
+
+    expect(prismaService.user.findUnique).toHaveBeenCalledWith({
+      where: {
+        id: user.id,
+      },
+    });
+
+    jest
+      .spyOn(prismaService.user, 'findUnique')
+      .mockResolvedValue(userToDomain);
+    expect(await usersRepository.findById(user.id)).toEqual(
+      UserMapper.toDomain(userToDomain),
+    );
+  });
 });
