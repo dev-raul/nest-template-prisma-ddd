@@ -46,6 +46,7 @@ lerna-debug.log*
 .temp
 .tmp
 pgdata
+.vscode
 
 # Runtime data
 pids

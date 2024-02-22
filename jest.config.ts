@@ -1,6 +1,7 @@
 import type { Config } from '@jest/types';
 import { pathsToModuleNameMapper } from 'ts-jest';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { compilerOptions } = require('./tsconfig.json');
 
 export default {
@@ -9,7 +10,11 @@ export default {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  collectCoverageFrom: ['<rootDir>/src/**/*.(t|j)s'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.(t|j)s',
+    '!src/**/*.module.ts',
+    '!prisma.service.ts',
+  ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
