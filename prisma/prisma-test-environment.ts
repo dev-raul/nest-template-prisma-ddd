@@ -33,16 +33,17 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
 
     await execSync(`${prismaBinary} migrate dev`);
 
-    return super.setup();
-  }
-
-  async teardown() {
     const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
     await Promise.all(
       modelNames.map((modelName) =>
         this.client[modelName.toLowerCase()].deleteMany(),
       ),
     );
+
+    return super.setup();
+  }
+
+  async teardown() {
     return super.teardown();
   }
 }
