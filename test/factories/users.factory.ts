@@ -19,7 +19,7 @@ type Overrides = Partial<
   >
 >;
 
-export function makeFakeUser(data = {} as Overrides, id: number) {
+export function makeFakeUser(data = {} as Overrides, id?: number) {
   const email = faker.internet.email();
   const password = faker.internet.password();
   const createdAt = new Date();
@@ -41,13 +41,13 @@ export function makeFakeUser(data = {} as Overrides, id: number) {
 export class UserFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makeUser(data = {} as Overrides, id: number): Promise<User> {
+  async makeUser(data = {} as Overrides, id?: number): Promise<User> {
     const user = makeFakeUser(data, id);
 
-    await this.prisma.user.create({
+    const rawUser = await this.prisma.user.create({
       data: UserMapper.toPrisma(user),
     });
 
-    return user;
+    return UserMapper.toDomain(rawUser);
   }
 }
