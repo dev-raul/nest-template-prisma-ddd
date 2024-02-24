@@ -28,7 +28,7 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
     process.env.DATABASE_URL = this.connectionString;
     this.global.process.env.DATABASE_URL = this.connectionString;
 
-    await execSync(`${prismaBinary} migrate dev`);
+    await execSync(`${prismaBinary} migrate deploy`);
 
     return super.setup();
   }
@@ -41,5 +41,7 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
     await client.connect();
     await client.query(`DROP SCHEMA IF EXISTS "${this.schema}" CASCADE`);
     await client.end();
+
+    return super.teardown();
   }
 }
