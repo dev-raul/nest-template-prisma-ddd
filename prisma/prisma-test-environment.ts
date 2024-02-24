@@ -1,30 +1,27 @@
-import { PrismaClient } from '@prisma/client';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config({ path: '.env.test' });
+
 import NodeEnvironment from 'jest-environment-node';
 import { exec } from 'node:child_process';
-import { promisify } from 'node:util';
+import * as crypto from 'node:crypto';
+import * as util from 'node:util';
+import { Client } from 'pg';
 
-import { HOST, PASSWORD, PORT, USER, NAME } from '../src/config/database';
+import { HOST, NAME, PASSWORD, PORT, USER } from '../src/config/database';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config({ path: __dirname + '.env.test' });
+const execSync = util.promisify(exec);
 
-const execSync = promisify(exec);
 const prismaBinary = './node_modules/.bin/prisma';
 
 export default class PrismaTestEnvironment extends NodeEnvironment {
   private schema: string;
   private connectionString: string;
-  private client: PrismaClient;
 
   constructor(config: any, _context: any) {
     super(config, _context);
 
-    this.schema = `${NAME}_test_${new Date().getTime()}`;
-    this.connectionString = `postgres://${USER}:${PASSWORD}@${HOST}:${PORT}/${this.schema}`;
-    this.client = new PrismaClient({
-      log: ['query'],
-      datasourceUrl: this.connectionString,
-    });
+    this.schema = `test_${crypto.randomUUID()}`;
+    this.connectionString = `postgresql://${USER}:${PASSWORD}@${HOST}:${PORT}/${NAME}?schema=${this.schema}`;
   }
 
   async setup() {
@@ -37,12 +34,12 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    // const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
-    // await Promise.all(
-    //   modelNames.map((modelName) =>
-    //     this.client[modelName.toLowerCase()].deleteMany(),
-    //   ),
-    // );
-    return super.teardown();
+    const client = new Client({
+      connectionString: this.connectionString,
+    });
+
+    await client.connect();
+    await client.query(`DROP SCHEMA IF EXISTS "${this.schema}" CASCADE`);
+    await client.end();
   }
 }
