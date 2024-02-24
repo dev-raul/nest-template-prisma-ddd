@@ -28,7 +28,7 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
     process.env.DATABASE_URL = this.connectionString;
     this.global.process.env.DATABASE_URL = this.connectionString;
 
-    await execSync(`${prismaBinary} migrate deploy`);
+    await execSync(`${prismaBinary} migrate dev`);
 
     return super.setup();
   }
