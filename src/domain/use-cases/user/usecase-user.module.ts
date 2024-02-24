@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@infra/database/database.module';
-import { ServicesModule } from '@infra/http/services/services';
+import { ServicesModule } from '@infra/http/services/services.module';
 
 import { UseCaseCreateUser } from './create-user';
-import { UseCaseGetUser } from './get-user';
+import { UseCaseGetUserById } from './get-user-by-id';
 
 @Module({
   imports: [DatabaseModule, ServicesModule],
-  providers: [UseCaseGetUser, UseCaseCreateUser],
-  exports: [UseCaseGetUser, UseCaseCreateUser],
+  providers: [UseCaseGetUserById, UseCaseCreateUser],
+  exports: [UseCaseGetUserById, UseCaseCreateUser],
 })
 export class UseCaseUserModule {}

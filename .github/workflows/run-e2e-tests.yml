@@ -1,0 +1,49 @@
+name: e2e Tests
+
+on: [pull_request]
+
+jobs:
+  run-e2e-tests:
+    name: Run e2e Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DATABASE: app
+          POSTGRES_USER: docker
+          POSTGRES_PASSWORD: docker
+          POSTGRES_ROOT_PASSWORD: toor
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies (with cache)
+        uses: bahmutov/npm-install@v1
+
+      - name: Run Tests
+        run: yarn test:e2e
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
+          DATABASE_USER: docker
+          DATABASE_PASS: docker
+          JWT_SECRECT: ${{secrets.JWT_TEMPLATE_PUBLIC}}
+          JWT_REFRESH_TOKEN_SECRECT: ${{secrets.JWT_TEMPLATE_REFRESH}}

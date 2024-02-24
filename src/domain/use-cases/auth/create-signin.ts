@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import {
   JWT_REFRESH_TOKEN_EXPIREIN,
   JWT_REFRESH_TOKEN_SECRECT,
-} from 'src/config/jwt';
+} from '@config/jwt';
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 import { EncryptorService } from '@domain/services/encryptor/encriptor.service';
 import { Email } from '@domain/value-objects/email';

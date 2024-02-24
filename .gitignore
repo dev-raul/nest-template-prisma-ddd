@@ -41,11 +41,13 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 .env.local
+.env.test
 
 # temp directory
 .temp
 .tmp
 pgdata
+.vscode
 
 # Runtime data
 pids

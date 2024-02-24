@@ -18,7 +18,7 @@ export class UserController {
   @Post('/')
   @ApiResponse({ type: CreateUserResponse, status: HttpStatus.CREATED })
   @Public()
-  async post(@Body() body: CreateUserBody): Promise<CreateUserResponse> {
+  async create(@Body() body: CreateUserBody): Promise<CreateUserResponse> {
     const user = await this.useCaseCreateUser.execute({
       email: body.email,
       password: body.password,

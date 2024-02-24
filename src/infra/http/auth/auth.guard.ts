@@ -1,3 +1,4 @@
+import { JWT_SECRECT } from '@config/jwt';
 import {
   CanActivate,
   ExecutionContext,
@@ -7,7 +8,6 @@ import {
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { JWT_SECRECT } from 'src/config/jwt';
 
 import { AuthUser } from './auth-user';
 import { IS_PUBLIC_KEY } from './public';

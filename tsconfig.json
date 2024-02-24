@@ -18,10 +18,12 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@src": ["./src/app.module.ts"],
       "@core/*": ["./src/core/*"],
       "@application/*": ["src/application/*"],
       "@domain/*": ["./src/domain/*"],
       "@infra/*": ["./src/infra/*"],
+      "@config/*": ["./src/config/*"],
       "@test/*": ["./test/*"],
       "@utils/*": ["./src/utils/*"]
     }

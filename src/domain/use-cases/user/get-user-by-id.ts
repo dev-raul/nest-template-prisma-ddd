@@ -5,18 +5,18 @@ import { NotFoundError } from '@domain/value-objects/errors/not-found-error';
 
 import { UsersRepository } from '@infra/database/repositories/users.repository';
 
-type UseCaseGetUserRequest = {
+type UseCaseGetUserByIdRequest = {
   id: number;
 };
 
-type UseCaseGetUserResponse = User;
+type UseCaseGetUserByIdResponse = User;
 
 @Injectable()
-export class UseCaseGetUser {
+export class UseCaseGetUserById {
   constructor(private userRepository: UsersRepository) {}
   async execute({
     id,
-  }: UseCaseGetUserRequest): Promise<UseCaseGetUserResponse> {
+  }: UseCaseGetUserByIdRequest): Promise<UseCaseGetUserByIdResponse> {
     const user = await this.userRepository.findById(id);
     if (!user) throw new NotFoundError('user');
 
