@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import NodeEnvironment from 'jest-environment-node';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -19,7 +19,7 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
   constructor(config: any, _context: any) {
     super(config, _context);
 
-    this.schema = `${NAME}_test`;
+    this.schema = `${NAME}_test_${new Date().getTime()}`;
     this.connectionString = `postgres://${USER}:${PASSWORD}@${HOST}:${PORT}/${this.schema}`;
     this.client = new PrismaClient({
       log: ['query'],
@@ -31,19 +31,18 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
     process.env.DATABASE_URL = this.connectionString;
     this.global.process.env.DATABASE_URL = this.connectionString;
 
-    await execSync(`${prismaBinary} migrate dev`);
-
-    const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
-    await Promise.all(
-      modelNames.map((modelName) =>
-        this.client[modelName.toLowerCase()].deleteMany(),
-      ),
-    );
+    await execSync(`${prismaBinary} migrate deploy`);
 
     return super.setup();
   }
 
   async teardown() {
+    // const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
+    // await Promise.all(
+    //   modelNames.map((modelName) =>
+    //     this.client[modelName.toLowerCase()].deleteMany(),
+    //   ),
+    // );
     return super.teardown();
   }
 }
