@@ -45,6 +45,5 @@ jobs:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
           DATABASE_USER: docker
           DATABASE_PASS: docker
-          DATABASE_NAME: nest_template
           JWT_SECRECT: ${{secrets.JWT_TEMPLATE_PUBLIC}}
           JWT_REFRESH_TOKEN_SECRECT: ${{secrets.JWT_TEMPLATE_REFRESH}}

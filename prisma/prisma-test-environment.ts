@@ -15,18 +15,22 @@ const prismaBinary = './node_modules/.bin/prisma';
 
 export default class PrismaTestEnvironment extends NodeEnvironment {
   private schema: string;
+  private dbName: string;
   private connectionString: string;
 
   constructor(config: any, _context: any) {
     super(config, _context);
 
     this.schema = `test_${crypto.randomUUID()}`;
-    this.connectionString = `postgresql://${USER}:${PASSWORD}@${HOST}:${PORT}/${NAME}?schema=${this.schema}`;
+    this.dbName = NAME ?? `test_dbname_${crypto.randomUUID()}`;
+    this.connectionString = `postgresql://${USER}:${PASSWORD}@${HOST}:${PORT}/${this.dbName}?schema=${this.schema}`;
   }
 
   async setup() {
     process.env.DATABASE_URL = this.connectionString;
     this.global.process.env.DATABASE_URL = this.connectionString;
+    process.env.DATABASE_NAME = this.dbName;
+    this.global.process.env.DATABASE_NAME = this.dbName;
 
     await execSync(`${prismaBinary} migrate deploy`);
 
