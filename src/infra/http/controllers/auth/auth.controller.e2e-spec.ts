@@ -45,7 +45,7 @@ describe('AuthController (e2e)', () => {
     });
 
     const response = await request(app.getHttpServer())
-      .post('/auth/signin')
+      .post('/api/auth/signin')
       .send(requestBody);
 
     expect(response.status).toEqual(HttpStatus.OK);
@@ -70,7 +70,7 @@ describe('AuthController (e2e)', () => {
     );
 
     const response = await request(app.getHttpServer())
-      .post('/auth/refresh')
+      .post('/api/auth/refresh')
       .send({ refreshToken });
 
     expect(response.status).toEqual(HttpStatus.OK);
@@ -93,7 +93,7 @@ describe('AuthController (e2e)', () => {
     });
 
     const response = await request(app.getHttpServer())
-      .get('/auth/profile')
+      .get('/api/auth/profile')
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 

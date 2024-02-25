@@ -23,7 +23,7 @@ describe('UserController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post('/users')
+      .post('/api/users')
       .send(requestBody);
 
     expect(response.status).toEqual(HttpStatus.CREATED);

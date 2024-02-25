@@ -7,7 +7,12 @@ import {
   Post,
   Request,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiResponse,
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 import { UseCaseCreateSignIn } from '@domain/use-cases/auth/create-signin';
 import { UseCaseRefreshToken } from '@domain/use-cases/auth/refresh-token';
@@ -33,12 +38,13 @@ export class AuthController {
     private useCaseGetUserById: UseCaseGetUserById,
   ) {}
 
-  @HttpCode(HttpStatus.OK)
-  @Post('signin')
+  @ApiOperation({ summary: 'Create user signin' })
   @ApiResponse({
     type: CreateSignInResponse,
     status: HttpStatus.OK,
   })
+  @HttpCode(HttpStatus.OK)
+  @Post('signin')
   @Public()
   async signIn(@Body() body: CreateSignInBody): Promise<CreateSignInResponse> {
     const { accessToken, refreshToken } =
@@ -47,12 +53,13 @@ export class AuthController {
     return { accessToken, refreshToken };
   }
 
-  @HttpCode(HttpStatus.OK)
-  @Post('refresh')
+  @ApiOperation({ summary: 'Generate new valid token by refreshToken' })
   @ApiResponse({
     type: CreateSignInResponse,
     status: HttpStatus.OK,
   })
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
   @Public()
   async refreshToken(
     @Body() body: RefreshTokenBody,
@@ -65,11 +72,13 @@ export class AuthController {
     return { accessToken, refreshToken };
   }
 
+  @ApiOperation({ summary: 'Get user by current session' })
   @Get('profile')
   @ApiResponse({
     type: UserViewModelResponse,
     status: HttpStatus.OK,
   })
+  @ApiBearerAuth()
   async getProfile(
     @Request() req: RequestAuthUser,
   ): Promise<UserViewModelResponse> {

@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { UseCaseCreateUser } from '@domain/use-cases/user/create-user';
 
@@ -14,9 +14,10 @@ import { CreateUserResponse } from './dto/create-user-response';
 export class UserController {
   constructor(private useCaseCreateUser: UseCaseCreateUser) {}
 
+  @ApiOperation({ summary: 'Create user' })
+  @ApiResponse({ type: CreateUserResponse, status: HttpStatus.CREATED })
   @HttpCode(HttpStatus.CREATED)
   @Post('/')
-  @ApiResponse({ type: CreateUserResponse, status: HttpStatus.CREATED })
   @Public()
   async create(@Body() body: CreateUserBody): Promise<CreateUserResponse> {
     const user = await this.useCaseCreateUser.execute({

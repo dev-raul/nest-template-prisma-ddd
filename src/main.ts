@@ -35,8 +35,9 @@ async function bootstrap() {
     .setDescription(`The ${APP_NAME} API description`)
     .setVersion(APP_VERSION)
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('/api/docs', app, document);
 
   app.listen(PORT).then(() => {
     LoggerServiceInstance.log(`HTTP server running on port ${PORT}!`);
