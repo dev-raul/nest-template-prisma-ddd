@@ -24,7 +24,13 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+I created this api to server as a template nest js with DDD.
+
+### Tools:
+
+- Nest
+- Prisma
+- Swagger
 
 ## Installation
 
@@ -32,7 +38,41 @@
 $ yarn install
 ```
 
+## Running prisma migration
+
+### Add envs in .env file
+
+```bash
+# Database
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASS=root
+DATABASE_NAME=nest_template_prisma
+DATABASE_ROOT_PASSWORD=root
+DATABASE_URL="postgresql://${DATABASE_USER}:${DATABASE_PASS}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}"
+```
+
+```bash
+$ npx prisma dev
+```
+
 ## Running the app
+
+### Add envs in .env file
+
+```bash
+#APP
+APP_NAME=nest-template-prisma
+APP_PORT=3333
+APP_VERSION=1.0.0
+
+#JWT
+JWT_SECRECT=DO-NOT-USE-THIS-VALUE
+JWT_REFRESH_TOKEN_SECRECT=DO-NOT-USE-THIS-VALUE
+# secunds
+JWT_EXPIREIN=60
+```
 
 ```bash
 # development
@@ -47,6 +87,17 @@ $ yarn run start:prod
 
 ## Test
 
+### Add envs in .env.test file
+
+```bash
+# Database
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASS=root
+DATABASE_NAME=test_nest_template_prisma
+```
+
 ```bash
 # unit tests
 $ yarn run test
@@ -58,15 +109,64 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Build
+
+```bash
+# product build
+$ yarn build
+```
+
+## Docker
+
+Add DOCKER_ENV=local/production in .env
+
+```bash
+# compose
+$ docker-compose up
+
+# build dockerfile
+$ docker build -t nest_template_api -f .docker/Dockerfile.{DOCKER_ENV} .
+```
+
+## Swagger
+
+Acesse o endereço: `http://localhost:{PORT}/api/docs`.
+
+## Structure
+
+```
+
+├─ 📁 prisma
+├─ 📁 src
+│  ├── 📁 configs
+│  ├── 📁 core
+│  │   ├─ 📁 domain
+│  │   └─ 📁 logic
+│  ├── 📁 domain
+│  │   ├─ 📁 entities
+│  │   ├─ 📁 services
+│  │   ├─ 📁 use-cases
+│  │   └─ 📁 values-objects
+│  └── 📁 infra
+│       ├─ 📁 database
+│       │  ├─ 📁 prisma
+│       │  └─ 📁 repositories
+│       ├─ 📁 http
+│       │  ├─ 📁 auth
+│       │  ├─ 📁 controllers
+│       │  ├─ 📁 services
+│       │  └─ 📁 view-models
+│       └─ 📁 logger
+└─ 📁 teste
+```
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Raul Silva](https://www.linkedin.com/in/raul-silva-a9a6991a4/)
 
 ## License
 
