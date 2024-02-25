@@ -118,7 +118,12 @@ $ yarn build
 
 ## Docker
 
-Add DOCKER_ENV=local/production in .env
+### Add envs in .env file
+
+```bash
+#Docker
+DOCKER_ENV=local
+```
 
 ```bash
 # compose
