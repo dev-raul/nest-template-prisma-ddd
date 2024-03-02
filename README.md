@@ -63,7 +63,7 @@ $ npx prisma dev
 
 ```bash
 #APP
-APP_NAME=nest-template-prisma
+APP_NAME=nest-template-prisma-ddd
 APP_PORT=3333
 APP_VERSION=1.0.0
 
